@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class LineDrawer : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject _owner;
+    [SerializeField] private GameObject _owner;
 
     private Vector3 _startPosition;
     private Vector3 _endPosition;
