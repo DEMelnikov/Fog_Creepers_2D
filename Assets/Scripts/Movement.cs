@@ -9,6 +9,8 @@ public class Movement : MonoBehaviour
     private bool _isSelected = false;
     private Camera _camera;
 
+    public Animator Animator;
+
     //private BoxCollider2D boxCollider;
 
     public bool IsSelected => _isSelected;
