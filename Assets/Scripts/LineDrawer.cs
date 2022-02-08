@@ -9,13 +9,15 @@ public class LineDrawer : MonoBehaviour
 
     private Vector3 _startPosition;
     private Vector3 _endPosition;
-    private LineRenderer lineRenderer;    
+    private LineRenderer lineRenderer;
+    private Camera _camera;
 
     private void Awake()
     {
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 2;
         lineRenderer.enabled = false;
+        _camera = Camera.main;
     }
 
     void Update()
@@ -29,7 +31,7 @@ public class LineDrawer : MonoBehaviour
         {
             _startPosition = transform.parent.position;
 
-            _endPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _endPosition = _camera.ScreenToWorldPoint(Input.mousePosition);
             _endPosition.z = 0;
 
             lineRenderer.startColor = Color.white;

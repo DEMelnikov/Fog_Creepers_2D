@@ -7,6 +7,8 @@ public class Movement : MonoBehaviour
     public float speed = 2f;
     private Vector3 _targetPosition;
     private bool _isSelected = false;
+    private Camera _camera;
+
     //private BoxCollider2D boxCollider;
 
     public bool IsSelected => _isSelected;
@@ -16,6 +18,7 @@ public class Movement : MonoBehaviour
     private void Awake()
     {
         _targetPosition = transform.position;
+        _camera = Camera.main;
     }
 
     void Update()
@@ -28,7 +31,7 @@ public class Movement : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0) && _isSelected)
         {
-            _targetPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _targetPosition = _camera.ScreenToWorldPoint(Input.mousePosition);
             _targetPosition.z = transform.position.z;
             _isSelected = false;
             gameObject.GetComponent<SpriteRenderer>().color = Color.white;
