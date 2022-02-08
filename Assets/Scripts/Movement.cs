@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    public float speed = 2f;
+    [SerializeField] private Animator _animator;
+    [SerializeField] private float _speed = 2f;
+
     private Vector3 _targetPosition;
     private bool _isSelected = false;
     private Camera _camera;
+
 
     //private BoxCollider2D boxCollider;
 
@@ -26,7 +29,12 @@ public class Movement : MonoBehaviour
 
         if (_targetPosition != transform.position)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _targetPosition, speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _targetPosition, _speed * Time.deltaTime);
+            _animator.SetFloat("speed", 1f);
+        }
+        else
+        {
+            _animator.SetFloat("speed", 0f);
         }
 
         if (Input.GetMouseButtonUp(0) && _isSelected)
