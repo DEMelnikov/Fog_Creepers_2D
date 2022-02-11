@@ -39,8 +39,6 @@ public class HeroAI : MonoBehaviour
     {
         //RaycastHit2D hit;
 
-
-
         //RaycastHit2D hit = ;
 
         //if (hit.collider != null)
@@ -53,9 +51,20 @@ public class HeroAI : MonoBehaviour
         //}
 
         Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
+        //Ray ray = _camera.ScreenPointToRay(controls);
+
         RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
 
-        Debug.Log("Target Position: " + hit.collider.gameObject.name);
+        if (hit.collider != null)
+        {
+            Debug.Log("Target Position: "+ hit.collider.gameObject.name);
+        }
+
+        //if (Physics2D.GetRayIntersection(ray, out hit))
+        //{
+
+        //} 
+
 
         //RaycastHit2D hit;
 
