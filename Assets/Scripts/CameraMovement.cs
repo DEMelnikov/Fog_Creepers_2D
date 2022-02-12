@@ -1,9 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using System;
+
+
 
 public class CameraMovement : MonoBehaviour
 {
+    //public CameraMovement (UserInteractions)
 
     //private Transform _position;
     //private float _speed = 2f;
@@ -16,11 +21,23 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float _upperBorder;// = 3f;
     [SerializeField] private float _bottomBorder;// = -3f;
 
+    [SerializeField] private UserInteractions _userInteractions;
+
+
+
     private Camera _camera;    
 
     private void Awake()
     {
         _camera = Camera.main;
+
+
+        _userInteractions.OnEmptyDrag += Move;
+        _userInteractions.OnMouseWheelAction += Zoom;
+
+        // UserInteractions.
+        //DragOrigin += OnEmptyDragStartMove;
+        //UserInteractions.
     }
 
     private void Update()
@@ -44,15 +61,16 @@ public class CameraMovement : MonoBehaviour
         _camera.transform.position += positionsDelta;
     }
 
-    public void ZoomIn()
+    public void Zoom(float scrollDelta)
     {
         float newSize = _camera.orthographicSize + _zoomStep;
+        if (scrollDelta > 0)
+            newSize = _camera.orthographicSize - _zoomStep;
+
+
         _camera.orthographicSize = Mathf.Clamp(newSize, _minZoomSize, _maxZoomSize);
     }
 
-    public void ZoomOut()
-    {
-        float newSize = _camera.orthographicSize - _zoomStep;
-        _camera.orthographicSize = Mathf.Clamp(newSize, _minZoomSize, _maxZoomSize);
-    }
+    //private void OnEmptyDragActionHandler
 }
+

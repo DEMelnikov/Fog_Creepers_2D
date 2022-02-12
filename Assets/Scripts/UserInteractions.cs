@@ -1,19 +1,39 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+//using UnityEngine.Events;
 
 public class UserInteractions : MonoBehaviour
 {
+
     [SerializeField] float _mouseWheelSensitivity = 0.1f;
 
     private Camera _camera;
     private Vector3 _dragOrigin;
     private bool _isCameraMove = false;
 
+    //public delegate Vector3 OnEmptyDrag (Vector3 dragOrigin);
 
+    public delegate void EmptyDrag(Vector3 dragOrigin);
+    public delegate void MouseWheel(float scrollDelta);
+
+    public EmptyDrag OnEmptyDrag;
+    public MouseWheel OnMouseWheelAction;
+        
+    //public event OnEmptyDrag onEmptyDragAction;
+
+    //public event EventHandler<EventOptionsObject> OnEmptyDragAction;
+
+    //public UnityEvent
     private void Awake()
+
     {
         _camera = Camera.main;
+
+        //OnEmptyDrag onEmptyDragAction;
+
+        //EmptyDragAction?.Invoke(new Vector3(0, 0, 0));
     }
 
         void Update()
@@ -36,11 +56,14 @@ public class UserInteractions : MonoBehaviour
             }
         }
 
-
         if (Input.GetMouseButton(0) && _isCameraMove)
         {
             //CameraMovement();
-            _camera.GetComponent<CameraMovement>().Move(_dragOrigin);
+            //_camera.GetComponent<CameraMovement>().Move(_dragOrigin);
+
+            //onEmptyDragAction?.Invoke(_dragOrigin );
+
+            OnEmptyDrag?.Invoke(_dragOrigin);
         }
 
         if (Input.GetMouseButtonUp(0))
@@ -48,16 +71,12 @@ public class UserInteractions : MonoBehaviour
             _isCameraMove = false;
         }
 
-        if (Input.mouseScrollDelta.y > _mouseWheelSensitivity)
-        {
-            _camera.GetComponent<CameraMovement>().ZoomIn();
-        }
+        Debug.Log("Wheel " + Input.mouseScrollDelta.y);
 
-        if (Input.mouseScrollDelta.y < -_mouseWheelSensitivity)
-        {
-            _camera.GetComponent<CameraMovement>().ZoomOut();
-        }
 
+
+        if (Input.mouseScrollDelta.y < -_mouseWheelSensitivity || Input.mouseScrollDelta.y >_mouseWheelSensitivity)
+            OnMouseWheelAction?.Invoke(Input.mouseScrollDelta.y);
 
 
 
@@ -76,5 +95,4 @@ public class UserInteractions : MonoBehaviour
         }
         return false;
     }
-
 }
