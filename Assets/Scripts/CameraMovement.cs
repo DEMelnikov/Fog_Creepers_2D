@@ -11,10 +11,10 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float _minZoomSize = 3f;
     [SerializeField] private float _maxZoomSize = 8f;
 
-    [SerializeField] private float _leftBorder = -1f;
-    [SerializeField] private float _rightBorder = 2f;
-    [SerializeField] private float _upperBorder = 3f;
-    [SerializeField] private float _bottomBorder = -3f;
+    [SerializeField] private float _leftBorder;// = -1f;
+    [SerializeField] private float _rightBorder;// = 2f;
+    [SerializeField] private float _upperBorder;// = 3f;
+    [SerializeField] private float _bottomBorder;// = -3f;
 
     private Camera _camera;    
 
@@ -25,6 +25,11 @@ public class CameraMovement : MonoBehaviour
 
     private void Update()
     {
+        _leftBorder = - 1;
+        _rightBorder = _camera.orthographicSize / 2 + 1;
+        _upperBorder = _camera.orthographicSize / 2 + 1;
+        _bottomBorder =  - 1;
+
         _camera.transform.position = new Vector3
             (
             Mathf.Clamp(transform.position.x, _leftBorder,_rightBorder),
