@@ -7,108 +7,58 @@ using UnityEngine.EventSystems;
 public class HeroAI : MonoBehaviour
 {
   //  [SerializeField] private Transform target;
-  //  [SerializeField] private Animator _animator;
+    [SerializeField] private Animator _animator;
 //    [SerializeField] private float _speed = 2f;
 
     private NavMeshAgent agent;
-    private Vector3 _targetPosition;
-    private bool _isSelected = false;
-    private Camera _camera;
+    public Vector3 _targetPosition;
+    public bool _isSelected = false;
+    //private Camera _camera;
     private bool _isWalking = false;
-    private Vector3 _targetPoint;
+    //public Vector3 _targetPoint;
 
     public bool IsSelected => _isSelected;
+
+    [SerializeField] private UserInteractions _userInteractions;
 
     private void Awake()
     {
         //_targetPosition = transform.position;
-        _camera = Camera.main;
+        //_camera = Camera.main;
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         //_targetPoint = null;
-    }
 
-
-    void Start()
-    {
-
+        _userInteractions.OnEndDragObjectPositionAction += SetMoveTarget;
+        _userInteractions.OnCancelHeroSelection += SetSelection;
     }
 
     void Update()
     {
-        //RaycastHit2D hit;
-
-        //RaycastHit2D hit = ;
-
-        //if (hit.collider != null)
-        //{
-        //    Debug.Log("Target Position: " + hit.collider.gameObject.transform.position);
-        //}
-        //else
-        //{
-        //    print("Hit!!!");
-        //}
-
-        Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
-        //Ray ray = _camera.ScreenPointToRay(controls);
-
-        RaycastHit2D hit = Physics2D.GetRayIntersection(ray);
-
-        if (hit.collider != null)
-        {
-            Debug.Log("Target Position: "+ hit.collider.gameObject.name);
-        }
-
-        //if (Physics2D.GetRayIntersection(ray, out hit))
-        //{
-
-        //} 
-
-
-        //RaycastHit2D hit;
-
-        //Physics2D.Raycast(_camera.ScreenToWorldPoint(Input.mousePosition), Vector2.zero, out hit);
-
-        //if (Input.GetMouseButton(0) )
-        ////if (Input.GetMouseButton(0) && Physics.Raycast(_camera.ScreenToWorldPoint(Input.mousePosition))\
-        //{
-        //    Debug.Log("qqq");
-        //    //Debug.Log("Target Position: " + hit.collider.gameObject.name);
-        //}
-
-
-        if (Input.GetMouseButtonUp(0) && _isSelected)
-        {
-            _targetPoint = _camera.ScreenToWorldPoint(Input.mousePosition);
-            _targetPoint.z = transform.position.z;
-            _isSelected = false;
-            gameObject.GetComponent<SpriteRenderer>().color = Color.white;
+        if (_isSelected)
             RotateHero(_targetPosition);
-            _isWalking = true;
-        }
 
         if (_isWalking)
         {
-            MoveToTarget(_targetPoint);
-            //_animator.SetFloat("speed", agent.speed);
+            _animator.SetFloat("speed", agent.speed);
         }
+    }
 
-
+    public void SetMoveTarget (Vector3 targetPoint)
+    {
+        _targetPosition = targetPoint;
+        if (transform.position != _targetPosition && _isSelected)
+        {
+            _isWalking = true;
+            agent.SetDestination(_targetPosition);
+        }
     }
 
     private void OnMouseDown()
     {
         _isSelected = true;
         gameObject.GetComponent<SpriteRenderer>().color = Color.green;
-        //Debug.Log("click");
-        //print("!!");
-    }
-
-    private void MoveToTarget(Vector3 _targetPoint)
-    {
-        agent.SetDestination(_targetPoint);
-        
     }
 
     private void RotateHero(Vector3 targetPosition)
@@ -120,6 +70,15 @@ public class HeroAI : MonoBehaviour
         else
         {
             transform.localScale = new Vector3(1f, 1f, 1f);
+        }
+    }
+
+    private void SetSelection (bool selection)
+    {
+        _isSelected = selection;
+        if (selection==false)
+        {
+            gameObject.GetComponent<SpriteRenderer>().color = Color.white;
         }
     }
 }

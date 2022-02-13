@@ -25,15 +25,17 @@ public class CameraMovement : MonoBehaviour
 
 
 
-    private Camera _camera;    
+    private Camera _camera;
+
+    public UserInteractions UserInteractions { get => _userInteractions; set => _userInteractions = value; }
 
     private void Awake()
     {
         _camera = Camera.main;
 
 
-        _userInteractions.OnEmptyDrag += Move;
-        _userInteractions.OnMouseWheelAction += Zoom;
+        UserInteractions.OnEmptyStartDragAction += Move;
+        UserInteractions.OnMouseWheelAction += Zoom;
 
         // UserInteractions.
         //DragOrigin += OnEmptyDragStartMove;
