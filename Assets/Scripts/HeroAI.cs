@@ -7,7 +7,8 @@ using UnityEngine.EventSystems;
 public class HeroAI : MonoBehaviour
 {
   //  [SerializeField] private Transform target;
-//    [SerializeField] private float _speed = 2f;
+    [SerializeField] private RuntimeAnimatorController _mageAnimateController;
+
 
     private Animator _animator;
     private NavMeshAgent _navMeshAgent;
@@ -16,16 +17,21 @@ public class HeroAI : MonoBehaviour
     public bool _isMage = false;
     //private Camera _camera;
     private bool _isWalking = false;
+    //private AnimatorOverrideController _animatonShemeMage;
 
     //private bool IsSelected => _isSelected;
     private UserInteractions _userInteractions;
+    [SerializeField] private Sprite _mageSprite;
 
-    
+
     private void Awake()
     {
         //_targetPosition = transform.position;
         //_camera = Camera.main;
         _animator = GetComponent<Animator>();
+
+
+        //
 
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.updateRotation = false;
@@ -39,6 +45,18 @@ public class HeroAI : MonoBehaviour
         _userInteractions.OnCancelHeroSelection += SetSelection;
     }
 
+    private void Start()
+    {
+        if (_isMage)
+        {
+            _animator.runtimeAnimatorController = _mageAnimateController;
+
+            _mageSprite = Resources.Load<Sprite>("1");
+            GetComponent<SpriteRenderer>().sprite = _mageSprite;
+        }
+
+
+    }
 
     public bool IsMage { get => _isMage;}
 

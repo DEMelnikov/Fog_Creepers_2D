@@ -208,9 +208,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 634391844277642869d8db27b888de21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 0}
+  _mageAnimateController: {fileID: 9100000, guid: 09488433339e2449783bf98a36f1b314, type: 2}
   _targetPosition: {x: 0, y: 0, z: 0}
-  _isSelected: 0
+  _isMage: 0
 --- !u!195 &1856193332
 NavMeshAgent:
   m_ObjectHideFlags: 0

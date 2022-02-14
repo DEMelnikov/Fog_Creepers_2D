@@ -16,7 +16,7 @@ public class Spawner : MonoBehaviour
     private int _runeRandomPositionLimitYMin = -3;
     private int _runesLimit = 3;
 
-    private int _heroLowestPosition = -5;
+    //private int _heroLowestPosition = -5;
 
     //private Random _random = new Random();
 
@@ -45,6 +45,7 @@ public class Spawner : MonoBehaviour
         GameObject mageHero = Instantiate(_heroPrefab, GenerateRandomVector3(), Quaternion.identity);
         //mageHero.transform.position = GenerateRandomVector3();
         mageHero.GetComponentInChildren<HeroAI>().SetMage();
+        //mageHero.GetComponentInChildren<Animator>().Con;
         mageHero.name = "Mage";
 
 
