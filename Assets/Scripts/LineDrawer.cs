@@ -5,15 +5,19 @@ using UnityEngine;
 public class LineDrawer : MonoBehaviour
 {
     [SerializeField] private GameObject _owner;
-    [SerializeField] private UserInteractions _userInteractions;
 
+    private Vector3 _endPosition;
     private Vector3 _startPosition;
-    [SerializeField]  private Vector3 _endPosition;
+    private UserInteractions _userInteractions;
     private LineRenderer lineRenderer;
     private Camera _camera;
 
     private void Awake()
     {
+
+        _userInteractions = (UserInteractions)GameObject.FindGameObjectWithTag("UserInteractions")
+            .GetComponent("UserInteractions");
+
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 2;
         lineRenderer.enabled = false;

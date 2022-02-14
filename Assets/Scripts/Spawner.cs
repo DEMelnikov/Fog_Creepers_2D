@@ -7,6 +7,7 @@ public class Spawner : MonoBehaviour
 
     [SerializeField] private GameObject _runePrefab;
     [SerializeField] private GameObject _heroPrefab;
+    [SerializeField] private int _heroesLimit = 3;
 
     //private List<GameObject> _runes;
 
@@ -25,16 +26,27 @@ public class Spawner : MonoBehaviour
 
         for (int i = 0; i < _runesLimit; i++)
         {
-            randomPosition  = GeneratRandomVector3(_runeRandomPositionLimitX * -1, _runeRandomPositionLimitX,
-                _runeRandomPositionLimitYMin, _runeRandomPositionLimitYMax);
+            //randomPosition = GenerateRandomVector3();
 
-            Instantiate(_runePrefab, randomPosition, Quaternion.identity).name = "Rune";
+            Instantiate(_runePrefab, GenerateRandomVector3(), Quaternion.identity).name = "Rune";
         }
 
-        randomPosition = GeneratRandomVector3(_runeRandomPositionLimitX * -1, _runeRandomPositionLimitX,
-            _heroLowestPosition, _heroLowestPosition++);
+        //randomPosition = GenerateRandomVector3(_runeRandomPositionLimitX * -1, _runeRandomPositionLimitX,
+        //    _heroLowestPosition, _heroLowestPosition++);
 
-        Instantiate(_heroPrefab, randomPosition, Quaternion.identity).name = "Hero";
+        //GameObject newHero;
+        for (int i = 0; i < _heroesLimit; i++)
+        {
+            GameObject newHero = Instantiate(_heroPrefab, GenerateRandomVector3(), Quaternion.identity);
+            //newHero.transform.position = GenerateRandomVector3();
+            newHero.name = "Hero";
+        }
+
+        GameObject mageHero = Instantiate(_heroPrefab, GenerateRandomVector3(), Quaternion.identity);
+        //mageHero.transform.position = GenerateRandomVector3();
+        mageHero.GetComponentInChildren<HeroAI>().SetMage();
+        mageHero.name = "Mage";
+
 
     }
     // Start is called before the first frame update
@@ -49,7 +61,7 @@ public class Spawner : MonoBehaviour
         
     }
 
-    private Vector3 GeneratRandomVector3(int minX, int maxX, int minY, int maxY)
+    private Vector3 GenerateRandomVector3()
 
     {
         Vector3 randomPosition = new Vector3(0, 0, 0);
@@ -59,5 +71,7 @@ public class Spawner : MonoBehaviour
 
         return randomPosition;
     }
+
+    //public V
 
 }

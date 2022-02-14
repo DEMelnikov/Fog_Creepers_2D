@@ -8,10 +8,6 @@ using System;
 
 public class CameraMovement : MonoBehaviour
 {
-    //public CameraMovement (UserInteractions)
-
-    //private Transform _position;
-    //private float _speed = 2f;
     [SerializeField] private float _zoomStep = 0.25f;
     [SerializeField] private float _minZoomSize = 3f;
     [SerializeField] private float _maxZoomSize = 8f;
@@ -21,25 +17,20 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float _upperBorder;// = 3f;
     [SerializeField] private float _bottomBorder;// = -3f;
 
-    [SerializeField] private UserInteractions _userInteractions;
-
-
-
+    private UserInteractions _userInteractions;
     private Camera _camera;
 
-    public UserInteractions UserInteractions { get => _userInteractions; set => _userInteractions = value; }
+    //public UserInteractions UserInteractions; //{ get => _userInteractions; set => _userInteractions = value; }
 
     private void Awake()
     {
         _camera = Camera.main;
+        _userInteractions = (UserInteractions)GameObject.FindGameObjectWithTag("UserInteractions")
+            .GetComponent("UserInteractions");
 
+        _userInteractions.OnEmptyStartDragAction += Move;
+        _userInteractions.OnMouseWheelAction += Zoom;
 
-        UserInteractions.OnEmptyStartDragAction += Move;
-        UserInteractions.OnMouseWheelAction += Zoom;
-
-        // UserInteractions.
-        //DragOrigin += OnEmptyDragStartMove;
-        //UserInteractions.
     }
 
     private void Update()

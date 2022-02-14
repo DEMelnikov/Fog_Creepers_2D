@@ -7,42 +7,52 @@ using UnityEngine.EventSystems;
 public class HeroAI : MonoBehaviour
 {
   //  [SerializeField] private Transform target;
-    [SerializeField] private Animator _animator;
 //    [SerializeField] private float _speed = 2f;
 
-    private NavMeshAgent agent;
+    private Animator _animator;
+    private NavMeshAgent _navMeshAgent;
     public Vector3 _targetPosition;
-    public bool _isSelected = false;
+    private bool _isSelected = false;
+    public bool _isMage = false;
     //private Camera _camera;
     private bool _isWalking = false;
-    //public Vector3 _targetPoint;
 
-    public bool IsSelected => _isSelected;
+    //private bool IsSelected => _isSelected;
+    private UserInteractions _userInteractions;
 
-    [SerializeField] private UserInteractions _userInteractions;
-
+    
     private void Awake()
     {
         //_targetPosition = transform.position;
         //_camera = Camera.main;
-        agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
+        _animator = GetComponent<Animator>();
+
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        _navMeshAgent.updateRotation = false;
+        _navMeshAgent.updateUpAxis = false;
         //_targetPoint = null;
+
+        _userInteractions = (UserInteractions)GameObject.FindGameObjectWithTag("UserInteractions")
+            .GetComponent("UserInteractions");
 
         _userInteractions.OnEndDragObjectPositionAction += SetMoveTarget;
         _userInteractions.OnCancelHeroSelection += SetSelection;
     }
 
+
+    public bool IsMage { get => _isMage;}
+
     void Update()
     {
-        if (_isSelected)
-            RotateHero(_targetPosition);
+        //if (_isSelected || transform.position != _targetPosition)
+
 
         if (_isWalking)
         {
-            _animator.SetFloat("speed", agent.speed);
+            _animator.SetFloat("speed", _navMeshAgent.speed);
+            RotateHero(_targetPosition);
         }
+
     }
 
     public void SetMoveTarget (Vector3 targetPoint)
@@ -51,9 +61,18 @@ public class HeroAI : MonoBehaviour
         if (transform.position != _targetPosition && _isSelected)
         {
             _isWalking = true;
-            agent.SetDestination(_targetPosition);
+            _navMeshAgent.isStopped = false;
+            _navMeshAgent.enabled = true;
+            _navMeshAgent.SetDestination(_targetPosition);
+
         }
     }
+
+    public void SetMage()
+    {
+        _isMage = true;
+    }
+
 
     private void OnMouseDown()
     {

@@ -11,12 +11,8 @@ public class HeroMovement : MonoBehaviour
     private bool _isSelected = false;
     private Camera _camera;
 
-
-    //private BoxCollider2D boxCollider;
-
     public bool IsSelected => _isSelected;
 
-    // Start is called before the first frame update
 
     private void Awake()
     {

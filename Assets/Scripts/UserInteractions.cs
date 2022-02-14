@@ -50,9 +50,10 @@ public class UserInteractions : MonoBehaviour
         {
             if (GetHitUnderRaycastMouse(out RaycastHit2D hit2DOrigin))
             {
-                if (hit2DOrigin.collider.gameObject.name == "Ground" || hit2DOrigin.collider.gameObject.name == "Obstacles")
+                string hitName = hit2DOrigin.collider.gameObject.name;
+                if (hitName == "Ground" || hitName == "Obstacles" || hitName == "Rune")
                 {
-                    // Debug.Log("Yeah!!!" + hit2D.collider.gameObject.name);
+                     Debug.Log("Yeah!!!" + hit2DOrigin.collider.gameObject.name);
                     _dragOrigin = _camera.ScreenToWorldPoint(Input.mousePosition);
                     _isCameraMove = true;
                 }
@@ -76,14 +77,10 @@ public class UserInteractions : MonoBehaviour
             OnHoldMouseButtonTargetPositionAction?.Invoke(GetVector3WithoutZ(_camera.ScreenToWorldPoint(Input.mousePosition)));
         }
 
-
         if (Input.GetMouseButton(0) && _isCameraMove)
         {
             OnEmptyStartDragAction?.Invoke(_dragOrigin);           
         }
-
-
-
 
         if (Input.GetMouseButtonUp(0) && _isHeroSelected)
         {
