@@ -210,7 +210,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mageAnimateController: {fileID: 9100000, guid: 09488433339e2449783bf98a36f1b314, type: 2}
   _targetPosition: {x: 0, y: 0, z: 0}
-  _isMage: 0
+  _actualSpeed: 0
+  _mageSprite: {fileID: 0}
+  _condition: 0
+  _velocity: {x: 0, y: 0, z: 0}
 --- !u!195 &1856193332
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -225,7 +228,7 @@ NavMeshAgent:
   m_Acceleration: 3
   avoidancePriority: 50
   m_AngularSpeed: 90
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.55
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

@@ -4026,7 +4026,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _runePrefab: {fileID: 8821901465945913497, guid: 8766ff84a845b45338fd8731f4d48203, type: 3}
   _heroPrefab: {fileID: 6016830970022058852, guid: 3ce4e05d7b6ef354ab4765aee87e17d4, type: 3}
-  _heroesLimit: 3
+  _heroesLimit: 0
 --- !u!4 &471631475
 Transform:
   m_ObjectHideFlags: 0

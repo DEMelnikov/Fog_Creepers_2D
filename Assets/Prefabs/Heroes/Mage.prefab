@@ -117,6 +117,7 @@ GameObject:
   - component: {fileID: 3844626148669588126}
   - component: {fileID: 2486488703793136572}
   - component: {fileID: 677835262165727598}
+  - component: {fileID: 5904273796287169483}
   m_Layer: 0
   m_Name: Hero sprite
   m_TagString: Untagged
@@ -264,6 +265,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 634391844277642869d8db27b888de21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mageAnimateController: {fileID: 0}
+  _targetPosition: {x: 0, y: 0, z: 0}
+  _actualSpeed: 0
+  _mageSprite: {fileID: 0}
+  _condition: 0
+  _velocity: {x: 0, y: 0, z: 0}
+--- !u!95 &5904273796287169483
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8707518216673024006}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 09488433339e2449783bf98a36f1b314, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8707518218501388876
 GameObject:
   m_ObjectHideFlags: 0
