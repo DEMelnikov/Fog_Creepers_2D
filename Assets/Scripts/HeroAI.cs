@@ -13,7 +13,7 @@ public class HeroAI : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
     [SerializeField] private Vector3 _targetPosition = Vector3.zero;
     private bool _isSelected = false;
-    private bool _isMage = false;
+    [SerializeField]private bool _isMage = false;
     //private Camera _camera;
     //private bool _isWalking = false;
     [SerializeField] private float _actualSpeed;
@@ -33,6 +33,16 @@ public class HeroAI : MonoBehaviour
 
     //private Vector3 _lastPosition;
 
+    private void OnEnable()
+    {
+        //if (_isMage)
+        //{
+        //    _animator.runtimeAnimatorController = _mageAnimateController;
+
+        //    _mageSprite = Resources.Load<Sprite>("Sprites/Heroes/MageDefault");
+        //    GetComponent<SpriteRenderer>().sprite = _mageSprite;
+        //}
+    }
 
     private void Awake()
     {
@@ -40,6 +50,13 @@ public class HeroAI : MonoBehaviour
         //_camera = Camera.main;
         _animator = GetComponent<Animator>();
 
+        if (_isMage)
+        {
+            _animator.runtimeAnimatorController = _mageAnimateController;
+
+            _mageSprite = Resources.Load<Sprite>("1");
+            GetComponent<SpriteRenderer>().sprite = _mageSprite;
+        }
 
         //
 
@@ -54,13 +71,7 @@ public class HeroAI : MonoBehaviour
         _userInteractions.OnEndDragObjectPositionAction += SetMoveTarget;
         _userInteractions.OnCancelHeroSelection += SetSelection;
 
-        if (_isMage)
-        {
-            _animator.runtimeAnimatorController = _mageAnimateController;
 
-            _mageSprite = Resources.Load<Sprite>("1");
-            GetComponent<SpriteRenderer>().sprite = _mageSprite;
-        }
     }
 
     private void Start()
