@@ -6,32 +6,24 @@ using UnityEngine.EventSystems;
 
 public class HeroAI : MonoBehaviour
 {
-  //  [SerializeField] private Transform target;
     [SerializeField] private RuntimeAnimatorController _mageAnimateController;
+    [SerializeField] private Vector3 _targetPosition = Vector3.zero;
+    [SerializeField] private bool _isMage = false;
+    [SerializeField] private Sprite _mageSprite;
+    [SerializeField] private CharacterState _state = CharacterState.Idle;
+    [SerializeField] private float _runeAwakingSkill = 15f;
+    [SerializeField] private float _runeAwakingPower = 5f;
+    [SerializeField] private Transform target;
+    [SerializeField] private float _actualSpeed;
+    //[SerializeField] private float _runeRangeCollision = 1f;
 
     private Animator _animator;
     private NavMeshAgent _navMeshAgent;
-    [SerializeField] private Vector3 _targetPosition = Vector3.zero;
     private bool _isSelected = false;
-    [SerializeField]private bool _isMage = false;
-    //private Camera _camera;
-    //private bool _isWalking = false;
-    [SerializeField] private float _actualSpeed;
-    //private AnimatorOverrideController _animatonShemeMage;
-
-    //private bool IsSelected => _isSelected;
     private UserInteractions _userInteractions;
-    [SerializeField] private Sprite _mageSprite;
-    [SerializeField] private CharacterState _state;
-    [SerializeField] private float _runeRangeCollision = 1f;
-    [SerializeField] private float _runeAwakingSkill = 15f;
-    [SerializeField] private float _runeAwakingPower = 5f;
     private RuneData _targetRune;
     private IEnumerator _currentCoroutine;
 
-    //[SerializeField] private Vector3 _velocity; //temp
-
-    //private Vector3 _lastPosition;
 
     private void OnEnable()
     {
@@ -183,45 +175,49 @@ public class HeroAI : MonoBehaviour
             {
                 _targetPosition = Vector3.zero;
                 _state = CharacterState.Idle;
+                //_animator.SetFloat("speed",0);
             }
         }
     }
 
     private void Walking()
     {
-
-
         var _velocity = _navMeshAgent.velocity;
 
-        _animator.SetFloat("speed", _navMeshAgent.velocity.x);
+        _animator.SetFloat("speed", Mathf.Abs(_navMeshAgent.velocity.x));
         if (Mathf.Abs(_navMeshAgent.velocity.x) <= Mathf.Abs(_navMeshAgent.velocity.y))
-            _animator.SetFloat("speed", _navMeshAgent.velocity.y);
+            _animator.SetFloat("speed", Mathf.Abs(_navMeshAgent.velocity.y));
+
         RotateHero(_targetPosition);
         TryResetMoveDestination();
     }
 
     private void Idle()
     {
-        Collider2D[] collisionsArray = Physics2D.OverlapCircleAll(transform.position, _runeRangeCollision);
+        _animator.SetFloat("speed", 0);
+    }
 
-        foreach (var collision in collisionsArray)
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        GameObject collisionObject = collision.gameObject;
+        if (collisionObject.name == "Rune" && _isMage && collisionObject.GetComponent<RuneData>().IsSleeping)
         {
-
-            if (collision.TryGetComponent<RuneData>(out RuneData rune) && _isMage && rune.GetAwakingStatus<100f)
+            if (_state == CharacterState.Idle)
             {
-                //print("Rune " + rune.AwakingStatus);
                 _state = CharacterState.RuneAwaking;
-                _targetRune = rune;
+                _targetRune = collisionObject.GetComponent<RuneData>();
             }
-            else
-            {
-                _state = CharacterState.Idle;
-            }
+
+            if (_state == CharacterState.RuneAwaking)
+                _state = CharacterState.RuneAwaking;
         }
     }
 
+
     private void RuneAwaking()
     {
+        _animator.SetFloat("speed", 0);
+
         if (_targetRune.IsSleeping)
         {
             if (_currentCoroutine == null)
@@ -250,13 +246,8 @@ public class HeroAI : MonoBehaviour
             {
                 _targetRune.ProgressAwaking(_runeAwakingPower);
             }
-            else
-            {
-                //StopCoroutine(_currentCoroutine);
-                //_currentCoroutine = null;
-            }
 
-            Debug.Log("Check " + check + "progress " + _targetRune.GetAwakingStatus);
+            //Debug.Log("Check " + check + "progress " + _targetRune.GetAwakingStatus);
             yield return new WaitForSeconds(delay);
         }
     }

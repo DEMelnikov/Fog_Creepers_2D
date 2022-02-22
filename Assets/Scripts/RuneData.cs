@@ -7,10 +7,10 @@ using UnityEngine.Events;
 public class RuneData : MonoBehaviour
 {
     [SerializeField] private float _awakingStatus = 0f;
+    [SerializeField] private float _awakingTryDelay = 5f;
+    [SerializeField] private float _chalengeRating = 5f;
     [SerializeField] private float _pointsToAwake = 100f;
     [SerializeField] private bool _isSleeping = true;
-    [SerializeField] private float _chalengeRating = 5f;
-    [SerializeField] private float _awakingTryDelay = 5f;
     [SerializeField] private GameObject _progressBar;
     [SerializeField] private Image _filler;
 
@@ -18,8 +18,8 @@ public class RuneData : MonoBehaviour
 
     public float GetAwakingStatus { get => _awakingStatus; }
     public float GetChalengeRating { get => _chalengeRating; }
-    public bool IsSleeping { get => _isSleeping; }
     public float GetAwakingDelay { get => _awakingTryDelay; }
+    public bool IsSleeping { get => _isSleeping; }
 
     public void Awake()
     {

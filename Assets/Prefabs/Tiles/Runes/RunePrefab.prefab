@@ -203,10 +203,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _awakingStatus: 0
+  _awakingTryDelay: 0.5
+  _chalengeRating: 5
   _pointsToAwake: 100
   _isSleeping: 1
-  _chalengeRating: 5
-  _awakingTryDelay: 0.5
   _progressBar: {fileID: 2321808885993315166}
   _filler: {fileID: 5842212527395619849}
 --- !u!50 &5391098541806106409
@@ -227,7 +227,7 @@ Rigidbody2D:
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 0
 --- !u!1 &2321808885993315166
