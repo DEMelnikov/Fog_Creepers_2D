@@ -6,35 +6,47 @@ public class LineDrawer : MonoBehaviour
 {
     [SerializeField] private GameObject _owner;
 
-    private Vector3 _startPosition;
     private Vector3 _endPosition;
+    private Vector3 _startPosition;
+    private UserInteractions _userInteractions;
     private LineRenderer lineRenderer;
     private Camera _camera;
 
     private void Awake()
     {
+
+        _userInteractions = (UserInteractions)GameObject.FindGameObjectWithTag("UserInteractions")
+            .GetComponent("UserInteractions");
+
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.positionCount = 2;
         lineRenderer.enabled = false;
         _camera = Camera.main;
+        _userInteractions.OnHoldMouseButtonTargetObjecNametAction += ChangeColor;
+        _userInteractions.OnHoldMouseButtonTargetPositionAction += SetEndPosition;
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && _owner.GetComponent<SpriteRenderer>().color == Color.green)
+        if (_owner.GetComponent<SpriteRenderer>().color == Color.green)
         {
             lineRenderer.enabled = true;
         }
+        else
+        {
+            lineRenderer.enabled = false;
+            ChangeColor("white");
+        }
 
-        if (Input.GetMouseButton(0))
+        if (lineRenderer.enabled)
         {
             _startPosition = transform.parent.position;
 
             _endPosition = _camera.ScreenToWorldPoint(Input.mousePosition);
             _endPosition.z = 0;
 
-            lineRenderer.startColor = Color.white;
-            lineRenderer.endColor = Color.white;
+            //ChangeColor("white");
+
 
             lineRenderer.SetPosition(0, _startPosition);
             lineRenderer.SetPosition(1, _endPosition);
@@ -45,5 +57,33 @@ public class LineDrawer : MonoBehaviour
         {
             lineRenderer.enabled = false;
         }
+    }
+
+    private void ChangeColor (string name)
+    {
+        switch (name)
+        {
+            case "Obstacles":
+                lineRenderer.startColor = Color.red;
+                lineRenderer.endColor = Color.red;
+
+                break;
+
+            case "Ground":
+                lineRenderer.startColor = Color.white;
+                lineRenderer.endColor = Color.green;
+
+                break;
+
+            default:
+                lineRenderer.startColor = Color.white;
+                lineRenderer.endColor = Color.white;
+                break;
+        }
+    }
+
+    private void SetEndPosition (Vector3 position)
+    {
+        _endPosition = position;
     }
 }
