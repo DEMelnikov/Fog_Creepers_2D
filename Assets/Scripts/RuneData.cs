@@ -12,6 +12,7 @@ public class RuneData : MonoBehaviour
     [SerializeField] private float _pointsToAwake = 100f;
     [SerializeField] private bool _isSleeping = true;
     [SerializeField] private GameObject _progressBar;
+    [SerializeField] private GameObject blowEffect;
     [SerializeField] private Image _filler;
 
     //private float _collisionsRange = 2;
@@ -36,6 +37,10 @@ public class RuneData : MonoBehaviour
     {
         _awakingStatus += amount;
         FillProgressBar();
+        Vector3 effectPosition = transform.parent.position;
+        effectPosition.x+=.5f;
+        effectPosition.y += .5f;
+        Instantiate(blowEffect, effectPosition, transform.rotation);
 
         if (_awakingStatus >= 100f)
         {

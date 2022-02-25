@@ -208,6 +208,7 @@ MonoBehaviour:
   _pointsToAwake: 100
   _isSleeping: 1
   _progressBar: {fileID: 2321808885993315166}
+  blowEffect: {fileID: 7236022825756606412, guid: 39acaeff99c63435cb4f87b166a506b3, type: 3}
   _filler: {fileID: 5842212527395619849}
 --- !u!50 &5391098541806106409
 Rigidbody2D:
