@@ -9,7 +9,6 @@ public class HeroAI : MonoBehaviour
     [SerializeField] private RuntimeAnimatorController _mageAnimateController;
     [SerializeField] private Vector3 _targetPosition = Vector3.zero;
     [SerializeField] private bool _isMage = false;
-    [SerializeField] private Sprite _mageSprite;
     [SerializeField] private CharacterState _state = CharacterState.Idle;
     [SerializeField] private float _runeAwakingSkill = 15f;
     [SerializeField] private float _runeAwakingPower = 5f;
@@ -17,6 +16,7 @@ public class HeroAI : MonoBehaviour
     [SerializeField] private float _actualSpeed;
     //[SerializeField] private float _runeRangeCollision = 1f;
 
+    private Sprite _mageSprite;
     private Animator _animator;
     private NavMeshAgent _navMeshAgent;
     private bool _isSelected = false;
@@ -27,13 +27,7 @@ public class HeroAI : MonoBehaviour
 
     private void OnEnable()
     {
-        //if (_isMage)
-        //{
-        //    _animator.runtimeAnimatorController = _mageAnimateController;
 
-        //    _mageSprite = Resources.Load<Sprite>("Sprites/Heroes/MageDefault");
-        //    GetComponent<SpriteRenderer>().sprite = _mageSprite;
-        //}
     }
 
     private void Awake()
@@ -41,16 +35,6 @@ public class HeroAI : MonoBehaviour
         //_targetPosition = transform.position;
         //_camera = Camera.main;
         _animator = GetComponent<Animator>();
-
-        if (_isMage)
-        {
-            _animator.runtimeAnimatorController = _mageAnimateController;
-
-            _mageSprite = Resources.Load<Sprite>("1");
-            GetComponent<SpriteRenderer>().sprite = _mageSprite;
-        }
-
-        //
 
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.updateRotation = false;
@@ -62,16 +46,18 @@ public class HeroAI : MonoBehaviour
 
         _userInteractions.OnEndDragObjectPositionAction += SetMoveTarget;
         _userInteractions.OnCancelHeroSelection += SetSelection;
-
-
     }
 
     private void Start()
     {
 
+        if (_isMage)
+        {
+            _animator.runtimeAnimatorController = _mageAnimateController;
 
-       // var lastPosition = transform.position;
-
+            _mageSprite = Resources.Load<Sprite>("1");
+            GetComponent<SpriteRenderer>().sprite = _mageSprite;
+        }
     }
 
     public bool IsMage { get => _isMage;}
@@ -213,7 +199,6 @@ public class HeroAI : MonoBehaviour
         }
     }
 
-
     private void RuneAwaking()
     {
         _animator.SetFloat("speed", 0);
@@ -246,8 +231,6 @@ public class HeroAI : MonoBehaviour
             {
                 _targetRune.ProgressAwaking(_runeAwakingPower);
             }
-
-            //Debug.Log("Check " + check + "progress " + _targetRune.GetAwakingStatus);
             yield return new WaitForSeconds(delay);
         }
     }
