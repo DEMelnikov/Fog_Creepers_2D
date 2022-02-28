@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 3700338442630673222}
   - component: {fileID: 7642275191899966929}
   - component: {fileID: 5391098541806106409}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Rune
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -378,7 +378,7 @@ GameObject:
   - component: {fileID: 4036379942814679562}
   - component: {fileID: 8026930569826619981}
   - component: {fileID: 7054334492853451922}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: RunePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
