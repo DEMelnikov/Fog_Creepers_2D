@@ -8,6 +8,7 @@ public class UserInteractions : MonoBehaviour
 {
 
     [SerializeField] float _mouseWheelSensitivity = 0.1f;
+    //[SerializeField] GameObject test;
 
     private Camera _camera;
     private Vector3 _dragOrigin;
@@ -103,7 +104,6 @@ public class UserInteractions : MonoBehaviour
 
         if (Input.mouseScrollDelta.y < -_mouseWheelSensitivity || Input.mouseScrollDelta.y > _mouseWheelSensitivity)
             OnMouseWheelAction?.Invoke(Input.mouseScrollDelta.y);
-
     }
 
     private bool GetHitUnderRaycastMouse(out RaycastHit2D hit2D)
