@@ -7,31 +7,32 @@ using UnityEngine.EventSystems;
 public class HeroAI : MonoBehaviour
 {
     [SerializeField] private RuntimeAnimatorController _mageAnimateController;
-    [SerializeField] private Vector3 _targetPosition = Vector3.zero;
+
     [SerializeField] private bool _isMage = false;
-    [SerializeField] private CharacterState _state = CharacterState.Idle;
+    [SerializeField] private CharacterState _state;
     [SerializeField] private float _runeAwakingSkill = 15f;
     [SerializeField] private float _runeAwakingPower = 5f;
     [SerializeField] private Transform target;
     [SerializeField] private float _actualSpeed;
+    [SerializeField] private float _skillStealth = 65f;
     //[SerializeField] private float _runeRangeCollision = 1f;
 
+    private Component _movement;
     private Sprite _mageSprite;
     private Animator _animator;
     private NavMeshAgent _navMeshAgent;
-    private bool _isSelected = false;
+
     private UserInteractions _userInteractions;
     private RuneData _targetRune;
     private IEnumerator _currentCoroutine;
 
+    public IEnumerator CurrentCoroutine { get => _currentCoroutine; }
 
-    private void OnEnable()
-    {
-
-    }
+    private float _skillStealthDelay = 2f;
 
     private void Awake()
     {
+        _movement = gameObject.GetComponent<HeroMovement>();
         //_targetPosition = transform.position;
         //_camera = Camera.main;
         _animator = GetComponent<Animator>();
@@ -44,8 +45,10 @@ public class HeroAI : MonoBehaviour
         _userInteractions = (UserInteractions)GameObject.FindGameObjectWithTag("UserInteractions")
             .GetComponent("UserInteractions");
 
-        _userInteractions.OnEndDragObjectPositionAction += SetMoveTarget;
-        _userInteractions.OnCancelHeroSelection += SetSelection;
+        //_userInteractions.OnEndDragObjectPositionAction += SetMoveTarget;
+        //_userInteractions.OnCancelHeroSelection += SetSelection;
+
+        _state = CharacterState.Idle;
     }
 
     private void Start()
@@ -62,13 +65,13 @@ public class HeroAI : MonoBehaviour
 
     public bool IsMage { get => _isMage;}
 
-    void Update()
+    private void Update()
     {
         switch (_state)
         {
             case CharacterState.Walking:
-
-                Walking();
+                //_movement.Walking();
+                gameObject.GetComponent<HeroMovement>().Walking();
                 break;
 
             case CharacterState.Idle:
@@ -84,24 +87,9 @@ public class HeroAI : MonoBehaviour
         }
     }
 
-
-    public void SetMoveTarget (Vector3 targetPoint)
+    public void StopCoroutine ()
     {
-        _targetPosition = targetPoint;
-        if (transform.position != _targetPosition && _isSelected)
-        {
-            //_isWalking = true;
-            _navMeshAgent.isStopped = false;
-            _navMeshAgent.enabled = true;
-            _navMeshAgent.SetDestination(_targetPosition);
-            _state = CharacterState.Walking;
-
-            if (_currentCoroutine != null)
-            {
-                StopCoroutine(_currentCoroutine);
-                _currentCoroutine = null;
-            }
-        }
+        _currentCoroutine = null;
     }
 
     public void SetMage()
@@ -109,73 +97,9 @@ public class HeroAI : MonoBehaviour
         _isMage = true;
     }
 
-
-    private void OnMouseDown()
+    public void SetCharacterState (CharacterState state)
     {
-        _isSelected = true;
-        gameObject.GetComponent<SpriteRenderer>().color = Color.green;
-    }
-
-    private void RotateHero(Vector3 targetPosition)
-    {
-        if (targetPosition.x < transform.position.x)
-        {
-            transform.localScale = new Vector3(-1f, 1f, 1f);
-        }
-        else
-        {
-            transform.localScale = new Vector3(1f, 1f, 1f);
-        }
-    }
-
-    private void SetSelection (bool selection)
-    {
-        _isSelected = selection;
-        if (selection==false)
-        {
-            gameObject.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-    }
-
-    private bool HaveMoveDestination()
-    {
-        if (_targetPosition == Vector3.zero)
-        {
-            return false;
-        }
-        var distance = Vector3.Distance(transform.position, _targetPosition);
-        if (distance >= _navMeshAgent.stoppingDistance)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    private void TryResetMoveDestination()
-    {
-        if (_targetPosition != Vector3.zero)
-        {
-            var distance = Vector3.Distance(transform.position, _targetPosition);
-            if (distance <= _navMeshAgent.stoppingDistance)
-            {
-                _targetPosition = Vector3.zero;
-                _state = CharacterState.Idle;
-                //_animator.SetFloat("speed",0);
-            }
-        }
-    }
-
-    private void Walking()
-    {
-        var _velocity = _navMeshAgent.velocity;
-
-        _animator.SetFloat("speed", Mathf.Abs(_navMeshAgent.velocity.x));
-        if (Mathf.Abs(_navMeshAgent.velocity.x) <= Mathf.Abs(_navMeshAgent.velocity.y))
-            _animator.SetFloat("speed", Mathf.Abs(_navMeshAgent.velocity.y));
-
-        RotateHero(_targetPosition);
-        TryResetMoveDestination();
+        _state = state;
     }
 
     private void Idle()
@@ -222,7 +146,7 @@ public class HeroAI : MonoBehaviour
         }
     }
 
-    private IEnumerator AwakeRune (float delay)
+    private IEnumerator AwakeRune(float delay)
     {
         while (_targetRune.IsSleeping && _state == CharacterState.RuneAwaking)
         {
@@ -236,7 +160,7 @@ public class HeroAI : MonoBehaviour
     }
 }
 
-enum CharacterState
+public enum CharacterState
 {
     Walking,
     Idle,
