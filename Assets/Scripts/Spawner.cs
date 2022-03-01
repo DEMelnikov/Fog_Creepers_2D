@@ -52,7 +52,7 @@ public class Spawner : MonoBehaviour
         }
 
         GameObject mageHero = Instantiate(_heroPrefab, GenerateRandomVector3EmptyGround(heroesSpawnZone), Quaternion.identity);
-        mageHero.GetComponentInChildren<HeroAI>().SetMage();
+        mageHero.GetComponentInChildren<Hero>().SetMage();
         mageHero.name = "Mage";
 
 

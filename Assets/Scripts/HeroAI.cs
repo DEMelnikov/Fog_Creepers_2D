@@ -6,9 +6,14 @@ using UnityEngine.EventSystems;
 
 public class HeroAI : MonoBehaviour
 {
-    [SerializeField] private RuntimeAnimatorController _mageAnimateController;
 
     [SerializeField] private bool _isMage = false;
+    private Animator _animator;
+    private NavMeshAgent _navMeshAgent;
+    private UserInteractions _userInteractions;
+
+
+    //------
     [SerializeField] private CharacterState _state;
     [SerializeField] private float _runeAwakingSkill = 15f;
     [SerializeField] private float _runeAwakingPower = 5f;
@@ -17,12 +22,9 @@ public class HeroAI : MonoBehaviour
     [SerializeField] private float _skillStealth = 65f;
     //[SerializeField] private float _runeRangeCollision = 1f;
 
-    private Component _movement;
-    private Sprite _mageSprite;
-    private Animator _animator;
-    private NavMeshAgent _navMeshAgent;
+    //private Component _movement;
+    //private Sprite _mageSprite;
 
-    private UserInteractions _userInteractions;
     private RuneData _targetRune;
     private IEnumerator _currentCoroutine;
 
@@ -32,15 +34,12 @@ public class HeroAI : MonoBehaviour
 
     private void Awake()
     {
-        _movement = gameObject.GetComponent<HeroMovement>();
-        //_targetPosition = transform.position;
-        //_camera = Camera.main;
+      //  _movement = gameObject.GetComponent<HeroMovement>();
         _animator = GetComponent<Animator>();
 
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.updateRotation = false;
         _navMeshAgent.updateUpAxis = false;
-        //_targetPoint = null;
 
         _userInteractions = (UserInteractions)GameObject.FindGameObjectWithTag("UserInteractions")
             .GetComponent("UserInteractions");
@@ -56,10 +55,12 @@ public class HeroAI : MonoBehaviour
 
         if (_isMage)
         {
-            _animator.runtimeAnimatorController = _mageAnimateController;
+            //_animator.runtimeAnimatorController = _mageAnimateController;
 
-            _mageSprite = Resources.Load<Sprite>("1");
-            GetComponent<SpriteRenderer>().sprite = _mageSprite;
+           // _mageSprite = Resources.Load<Sprite>("1");
+            _animator.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("AnimateControllers/Mage/Mage");
+
+          //  GetComponent<SpriteRenderer>().sprite = _mageSprite;
         }
     }
 
@@ -71,7 +72,7 @@ public class HeroAI : MonoBehaviour
         {
             case CharacterState.Walking:
                 //_movement.Walking();
-                gameObject.GetComponent<HeroMovement>().Walking();
+//                gameObject.GetComponent<HeroMovement>().Walking();
                 break;
 
             case CharacterState.Idle:
@@ -92,10 +93,10 @@ public class HeroAI : MonoBehaviour
         _currentCoroutine = null;
     }
 
-    public void SetMage()
-    {
-        _isMage = true;
-    }
+    public void SetMage() => _isMage = true;
+    //{
+    //    _isMage = true;
+    //}
 
     public void SetCharacterState (CharacterState state)
     {
@@ -166,9 +167,6 @@ public enum CharacterState
     Idle,
     RuneAwaking
 }
-
-
-
 
 
 

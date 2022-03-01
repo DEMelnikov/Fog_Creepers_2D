@@ -15,7 +15,7 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float _leftBorder;// = -1f;
     [SerializeField] private float _rightBorder;// = 2f;
     [SerializeField] private float _upperBorder;// = 3f;
-    [SerializeField] private float _bottomBorder;// = -3f;
+    [SerializeField] private float _bottomBorder;// = -5f;
 
     private UserInteractions _userInteractions;
     private Camera _camera;
