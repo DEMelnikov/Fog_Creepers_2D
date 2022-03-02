@@ -12,7 +12,12 @@ public class Spawner : MonoBehaviour
     [SerializeField] private int _enemiesAtStart = 1;
     [SerializeField] private int _runesLimit = 3;
 
-    //[SerializeField] private GameObject test;
+    [SerializeField] private GameObject test;
+    private int _tryFindPositionLimit = 100;
+    //private static int qqq = 0;
+
+    //public GameObject defaultPrefab;
+
     //private List<GameObject> _runes;
 
     //private int _runeRandomPositionLimitX = 9;
@@ -25,16 +30,18 @@ public class Spawner : MonoBehaviour
 
     //private Random _random = new Random();
 
-    private SpawnZone heroesSpawnZone = new SpawnZone(-8f, -6f, 1f, 10f);
+    private SpawnZone heroesSpawnZone = new SpawnZone(-8f, -5f, 0f, 10f);
     private SpawnZone runesSpawnZone = new SpawnZone(-8f, -1f, 6f, 14f);
-    private SpawnZone[] enemySpawnZones = { new SpawnZone(-8,-1,6f,1f),
+    private SpawnZone[] enemySpawnZones = { new SpawnZone(-7,-1,6f,0f),
         new SpawnZone(-8f, 4f, 1f, 14f),
-        new SpawnZone(7f, -1f, 6f, 1f)};
+        new SpawnZone(6f, -1f, 6f, 1f)};
         
 
     private void Awake()
     {
         //SpawnZone heroesSpawnZone = new SpawnZone(-8f,-6f,1f,10f);
+        //Debug.Log("Scale x" + defaultPrefab.transform.localScale.x);
+        //Debug.Log("Scale y" + defaultPrefab.transform.localScale.y);
 
         layerMaskCheckCollisions = 3;
 
@@ -59,7 +66,7 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < _enemiesAtStart; i++)
         {
             int zoneIndex = Random.Range(0, enemySpawnZones.Length);
-            print("ZI " +zoneIndex );
+           // print("ZI " +zoneIndex );
             GameObject enemy = Instantiate(_defaultEmemy, GenerateRandomVector3EmptyGround(enemySpawnZones[zoneIndex]), Quaternion.identity);
             enemy.name = "Enemy";
         }
@@ -83,21 +90,26 @@ public class Spawner : MonoBehaviour
     private Vector3 GenerateRandomVector3EmptyGround(SpawnZone spawnZone)
 
     {
+        int counter = 0;
+
         Vector3 randomPosition = new Vector3(0, 0, 0);
 
-       // do
-        //{
-            randomPosition.x = Random.Range(spawnZone.X, spawnZone.X+spawnZone.Width);
-            randomPosition.y = Random.Range(spawnZone.Y, spawnZone.Y+spawnZone.Height);
+        do
+        {
+            counter++;
+
+            randomPosition.x = (int)Random.Range(spawnZone.X, spawnZone.X + spawnZone.Width)  + 0.5f;
+            randomPosition.y = (int)Random.Range(spawnZone.Y, spawnZone.Y + spawnZone.Height) + 0.5f;
             randomPosition.z = 0;
 
-        //Physics2D.OverlapCircle(randomPosition, 130f, layerMaskCheckCollisions);
-        //print(Physics2D.OverlapCircle(randomPosition,100f, layerMaskCheckCollisions));
-        //Gizmos.DrawWireSphere(randomPosition,100f);
-       // Instantiate(test, randomPosition, Quaternion.identity);
-        //} while (IsGround(randomPosition)==false);s
+            if (IsGround(randomPosition) == false)
+                return randomPosition;
 
-        return randomPosition;
+           // Instantiate(test, randomPosition, Quaternion.identity);
+
+        } while (counter < _tryFindPositionLimit);
+
+        return randomPosition;// = Vector3.zero;
     }
 
     private class SpawnZone
@@ -115,15 +127,14 @@ public class Spawner : MonoBehaviour
             Width = width;
         }
     }
-    //private bool IsGround(Vector3 position)
-    //{
-    //    Instantiate(test,position,Quaternion.identity);
-    //    if (Physics.CheckSphere(position, 0.5f))
-    //    {
-    //        Debug.Log("Generator Collision");
-    //        return true;
-    //    }
 
-    //    return false;
-    //}
+    private bool IsGround(Vector3 position)
+    {
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(position, 0.6f, LayerMask.GetMask("Obstacles"));
+
+        if (hitColliders.Length == 0)
+            return false;
+
+        return true;
+    }
 }

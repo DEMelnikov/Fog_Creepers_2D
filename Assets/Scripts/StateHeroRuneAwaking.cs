@@ -62,7 +62,7 @@ public class StateHeroRuneAwaking : State
     {
         while (_hero.TargetRune.IsSleeping)
         {
-            Debug.Log("QQQ");
+            //Debug.Log("QQQ");
             var check = Random.Range(0, 101 + _hero.TargetRune.GetChalengeRating);
             if (check <= _hero.RuneAwakingSkill)
             {

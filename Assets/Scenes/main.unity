@@ -996,7 +996,7 @@ GameObject:
   - component: {fileID: 184459813}
   - component: {fileID: 184459812}
   - component: {fileID: 184459815}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3973,6 +3973,8 @@ MonoBehaviour:
   _heroesLimit: 3
   _enemiesAtStart: 5
   _runesLimit: 3
+  test: {fileID: 8579250462194815455, guid: 834a127cdd04444dd9370dbccf5b1b75, type: 3}
+  defaultPrefab: {fileID: 4770356099852710070, guid: 39cc496a76f6a4ea2afdbbdeda6c17bc, type: 3}
 --- !u!4 &471631475
 Transform:
   m_ObjectHideFlags: 0
