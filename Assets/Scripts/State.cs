@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class State
 {
+    public abstract HeroStates StateName { get; }
+
     public virtual void Enter()
     {
 
@@ -20,5 +22,11 @@ public abstract class State
     }
 }
 
+public enum HeroStates
+{
+    Idle,
+    Walking,
+    RuneAwaking
+}
 
 

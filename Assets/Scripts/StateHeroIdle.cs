@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class StateHeroIdle : State
 {
     private Animator _animator;
     private Hero _hero;
+
+    public override HeroStates StateName { get; } = HeroStates.Idle;
 
     public StateHeroIdle (Hero hero)
     {
@@ -27,5 +30,10 @@ public class StateHeroIdle : State
     public override void Update()
     {
         base.Update();
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        Debug.Log("It works2");
     }
 }

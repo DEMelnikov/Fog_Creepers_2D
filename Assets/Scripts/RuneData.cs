@@ -53,7 +53,7 @@ public class RuneData : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_isSleeping && collision.gameObject.TryGetComponent<HeroAI>(out HeroAI hero) && hero.IsMage)
+        if (_isSleeping && collision.gameObject.TryGetComponent<Hero>(out Hero hero) && hero.IsMage)
         {
             _progressBar.SetActive(true);
             FillProgressBar();
@@ -62,7 +62,7 @@ public class RuneData : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (_isSleeping && collision.gameObject.TryGetComponent<HeroAI>(out HeroAI hero) && hero.IsMage)
+        if (_isSleeping && collision.gameObject.TryGetComponent<Hero>(out Hero hero) && hero.IsMage)
         {
             _progressBar.SetActive(false);
         }

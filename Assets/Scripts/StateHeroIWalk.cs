@@ -11,6 +11,8 @@ public class StateHeroWalk : State
     private Animator _animator;
     private Vector3 _previousTargetPoint;
 
+    public override HeroStates StateName { get; } = HeroStates.Walking;
+
     public StateHeroWalk(Hero hero)
     {
         _hero = hero;
